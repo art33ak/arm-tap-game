@@ -92,11 +92,20 @@
         </section>
 
         <!-- 3. ԱՌԱՋԱԴՐԱՆՔՆԵՐ (TASKS) ԷԿՐԱՆ -->
-        <section id="screen-tasks" class="screen">
-            <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
+<section id="screen-tasks" class="screen">
+    <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
 
-            <div class="card card-gold">
-                <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
+    <!-- ՕՐԱԿԱՆ ՊԱՐԳԵՎԻ ՔԱՐՏ -->
+    <div class="card">
+        <h3>🎁 Օրական Պարգև</h3>
+        <p>Ստացիր անվճար ARM ամեն օր</p>
+        <button class="btn" onclick="claimDailyReward()">Ստանալ Օրական Պարգևը</button>
+    </div>
+
+    <!-- VIP Holder Task -->
+    <div class="card card-gold">
+        <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
+        ...
                 <p data-i18n="vipTaskDesc">Պահիր 100,000,000 ARM քո TON դրամապանակում</p>
                 <button class="btn btn-gold" onclick="checkWalletArmBalance()" data-i18n="checkBalBtn">Ստուգել հաշվեկշիռը</button>
             </div>

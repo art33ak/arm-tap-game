@@ -348,3 +348,93 @@ function adminAddTokens() {
     alert('ARM տոկենները ավելացվեցին:');
   }
 }
+// ==================== DAILY REWARD & TASKS ====================
+
+// 1. Օրական Պարգևի Ֆունկցիա
+const dailyRewards = [1000, 2000, 5000, 10000, 25000, 50000, 100000];
+
+function claimDailyReward() {
+    const now = Date.now();
+    const oneDayInMs = 24 * 60 * 60 * 1000;
+    const lastClaim = userData.lastDailyClaim || 0;
+    const timePassed = now - lastClaim;
+
+    if (timePassed < oneDayInMs) {
+        const hoursLeft = Math.ceil((oneDayInMs - timePassed) / (1000 * 60 * 60));
+        alert(`Օրական պարգևը հասանելի կլինի ${hoursLeft} ժամից:`);
+        return;
+    }
+
+    let streak = userData.dailyStreak || 0;
+    if (timePassed > oneDayInMs * 2) {
+        streak = 0;
+    }
+
+    const reward = dailyRewards[streak % dailyRewards.length];
+    userData.balance = (userData.balance || 0) + reward;
+    userData.dailyStreak = streak + 1;
+    userData.lastDailyClaim = now;
+
+    userRef.update({
+        balance: userData.balance,
+        dailyStreak: userData.dailyStreak,
+        lastDailyClaim: userData.lastDailyClaim
+    });
+
+    alert(`Դուք ստացաք +${reward.toLocaleString()} ARM օրական պարգև:`);
+    updateUI();
+}
+
+// 2. Առաջադրանքների Ցուցակ
+const tasksList = [
+    {
+        id: "tg_channel",
+        title: "Միացիր Telegram ալիքին",
+        reward: 5000,
+        link: "https://t.me/armtokens_bot"
+    }
+];
+
+function renderTasks() {
+    const container = document.getElementById('tasks-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+    tasksList.forEach(task => {
+        const isCompleted = userData.completedTasks && userData.completedTasks.includes(task.id);
+        const div = document.createElement('div');
+        div.style.cssText = "background: rgba(255,255,255,0.05); padding: 12px; margin: 8px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;";
+        div.innerHTML = `
+            <div>
+                <strong style="color: #fff;">${task.title}</strong>
+                <div style="color: #ffd700;">+${task.reward.toLocaleString()} ARM</div>
+            </div>
+            <button onclick="completeTask('${task.id}', ${task.reward}, '${task.link}')" 
+                    style="padding: 8px 15px; border-radius: 8px; border: none; background: ${isCompleted ? '#555' : '#0088cc'}; color: #fff;"
+                    ${isCompleted ? 'disabled' : ''}>
+                ${isCompleted ? 'Done' : 'Start'}
+            </button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function completeTask(taskId, reward, link) {
+    if (link && window.Telegram && window.Telegram.WebApp) {
+        Telegram.WebApp.openTelegramLink(link);
+    }
+    if (!userData.completedTasks) userData.completedTasks = [];
+
+    if (!userData.completedTasks.includes(taskId)) {
+        userData.completedTasks.push(taskId);
+        userData.balance = (userData.balance || 0) + reward;
+
+        userRef.update({
+            balance: userData.balance,
+            completedTasks: userData.completedTasks
+        });
+
+        updateUI();
+        renderTasks();
+    }
+}

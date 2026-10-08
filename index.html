@@ -1,162 +1,206 @@
 <!DOCTYPE html>
 <html lang="hy">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>ARM TAP</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Telegram Web App SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- TON Connect SDK -->
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ARM TAP</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- TON Connect SDK -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </head>
 <body>
-  <div class="app-container">
+    <div class="app-container">
 
-    <!-- 1. ԹԱՓ / HOME ԷԿՐԱՆ -->
-    <section id="screen-tap" class="screen active">
-      <div class="header-info">
-        <div class="level-info">
-          <span id="level-title">Մաստեր (Մակարդակ 4)</span>
-          <div class="progress-bar-bg">
-            <div id="level-progress" class="progress-bar-fill" style="width: 17%;"></div>
-          </div>
-        </div>
-      </div>
+        <!-- 1. ԹԱՓ / HOME ԷԿՐԱՆ -->
+        <section id="screen-tap" class="screen active">
+            <div class="header-info">
+                <div class="level-info">
+                    <span id="level-title" data-i18n="levelTitle">Մաստեր (Մակարդակ 4)</span>
+                    <div class="progress-bar-bg">
+                        <div id="level-progress" class="progress-bar-fill" style="width: 17%;"></div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="balance-section">
-        <h1 id="balance-display">0</h1>
-        <span class="token-symbol">ARM</span>
-      </div>
+            <div class="balance-section">
+                <h1 id="balance-display">0</h1>
+                <span class="token-symbol">ARM</span>
+            </div>
 
-      <p class="welcome-text" id="user-greeting">Ողջույն! Թափ արա և հավաքիր ARM</p>
+            <p class="welcome-text" id="user-greeting" data-i18n="welcomeText">Ողջույն! Թափ արա և հավաքիր ARM</p>
 
-      <div class="tap-container">
-        <button id="tap-btn" class="coin-btn">
-          <span>ARM</span>
-        </button>
-      </div>
+            <!-- VIP Status Badge -->
+            <div id="vip-badge" class="vip-badge-hidden" data-i18n="vipBadge">
+                👑 VIP HOLDER (+2x Tap Power)
+            </div>
 
-      <div class="energy-card">
-        <div class="energy-header">
-          <span>⚡ ԷՆԵՐԳԻԱ</span>
-          <span><strong id="energy-current">1000</strong>/<span id="energy-max">1000</span></span>
-        </div>
-        <div class="progress-bar-bg">
-          <div id="energy-bar" class="progress-bar-fill" style="width: 100%;"></div>
-        </div>
-      </div>
+            <div class="tap-container">
+                <button id="tap-btn" class="coin-btn">
+                    <span>ARM</span>
+                </button>
+            </div>
 
-      <div class="daily-reward-card">
-        <h3>🎁 Օրական պարգև</h3>
-        <div class="days-grid">
-          <div class="day-box">Օր 1<br>100</div>
-          <div class="day-box">Օր 2<br>250</div>
-          <div class="day-box">Օր 3<br>500</div>
-          <div class="day-box">Օր 4<br>1K</div>
-          <div class="day-box active-day">Օր 5<br>2.5K</div>
-          <div class="day-box">Օր 6<br>5K</div>
-          <div class="day-box">Օր 7<br>10K</div>
-        </div>
-      </div>
-    </section>
+            <div class="energy-card">
+                <div class="energy-header">
+                    <span data-i18n="energyHeader">⚡ ԷՆԵՐԳԻԱ</span>
+                    <span><strong id="energy-current">1000</strong>/<span id="energy-max">1000</span></span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="energy-bar" class="progress-bar-fill" style="width: 100%;"></div>
+                </div>
+            </div>
 
-    <!-- 2. ԲՈՒՍՏԵՐ (BOOSTS) ԷԿՐԱՆ -->
-    <section id="screen-boosts" class="screen">
-      <h2>⚡ Բուստերներ</h2>
-      <div class="card" onclick="buyBoost('multitap')">
-        <h3>🚀 Multitap</h3>
-        <p>+1 միավոր ամեն թափի համար</p>
-        <button class="btn">Բարձրացնել (100 ARM)</button>
-      </div>
-      <div class="card" onclick="buyBoost('energy_limit')">
-        <h3>🔋 Energy Limit</h3>
-        <p>+500 առավելագույն էներգիա</p>
-        <button class="btn">Բարձրացնել (200 ARM)</button>
-      </div>
-    </section>
+            <div class="daily-reward-card">
+                <h3 data-i18n="dailyReward">🎁 Օրական պարգև</h3>
+                <div class="days-grid">
+                    <div class="day-box"><span data-i18n="day">Օր</span> 1<br>100</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 2<br>250</div>
+                    <div class="day-box"><span data-i18n="day">Օр</span> 3<br>500</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 4<br>1K</div>
+                    <div class="day-box active-day"><span data-i18n="day">Օր</span> 5<br>2.5K</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 6<br>5K</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 7<br>10K</div>
+                </div>
+            </div>
+        </section>
 
-    <!-- 3. ԱՌԱՋԱԴՐԱՆՔՆԵՐ (TASKS) ԷԿՐԱՆ -->
-    <section id="screen-tasks" class="screen">
-      <h2>🎯 Առաջադրանքներ</h2>
-      <div class="card">
-        <h3>📢 Միացիր Telegram ալիքին</h3>
-        <p>Պարգև՝ +5,000 ARM</p>
-        <button class="btn" onclick="completeTask('tg_channel', 5000)">Կատարել</button>
-      </div>
-    </section>
+        <!-- 2. ԲՈՒՍՏԵՐ (BOOSTS) ԷԿՐԱՆ -->
+        <section id="screen-boosts" class="screen">
+            <h2 data-i18n="boostsTitle">⚡ Բուստերներ & VIP</h2>
 
-    <!-- 4. ՔՍԱԿ (WALLET) ԷԿՐԱՆ -->
-    <section id="screen-wallet" class="screen">
-      <h2>💎 Քսակ (TON Connect)</h2>
-      <p>Միացրու քո TON քսակը ARM տոկեններ ստանալու համար։</p>
-      <div id="ton-connect-button"></div>
-      <div class="contract-info">
-        <p><strong>ARM Token Contract:</strong></p>
-        <small>EQB7bzPDOh29TLaZn-GG6Gbtn0nggQIZ2EwZ4gH5W3HwCqAB</small>
-      </div>
-    </section>
+            <!-- STON.fi Promo Card -->
+            <div class="card card-gold">
+                <h3 data-i18n="buyStonTitle">👑 Buy ARM on STON.fi</h3>
+                <p data-i18n="buyStonDesc">Գնիր 100M+ ARM DEX-ում և ստացիր **2x Tap Power** + VIP Status անմիջապես!</p>
+                <a href="https://app.ston.fi/swap?chartVisible=false&ft=TON&tt=EQB7bzPDOh29TLaZn-GG6Gbtn0nggQIZ2EwZ4gH5W3HwCqAB" target="_blank" class="btn btn-gold-link" data-i18n="buyStonBtn">
+                    🛒 Գնել STON.fi-ում
+                </a>
+            </div>
 
-    <!-- 5. ՌԱՆԳ (RANK / TOP) ԷԿՐԱՆ -->
-    <section id="screen-rank" class="screen">
-      <h2>🏆 Լավագույն խաղացողներ</h2>
-      <ol id="leaderboard-list" class="leaderboard">
-        <li>Բեռնվում է...</li>
-      </ol>
-    </section>
+            <div class="card">
+                <h3>🚀 Multitap</h3>
+                <p data-i18n="multitapDesc">+1 միավոր ամեն թափի համար</p>
+                <button class="btn" onclick="buyBoost('multitap')"><span data-i18n="upgradeBtn">Բարձրացնել</span> (100 ARM)</button>
+            </div>
+            <div class="card">
+                <h3>🔋 Energy Limit</h3>
+                <p data-i18n="energyDesc">+500 առավելագույն էներգիա</p>
+                <button class="btn" onclick="buyBoost('energy')"><span data-i18n="upgradeBtn">Բարձրացնել</span> (200 ARM)</button>
+            </div>
+        </section>
 
-    <!-- 6. ՊՐՈՖԻԼ (PROFILE) ԷԿՐԱՆ -->
-    <section id="screen-profile" class="screen">
-      <h2>👤 Պրոֆիլ</h2>
-      <p id="profile-name">Անուն: -</p>
-      <p id="profile-id">ID: -</p>
-      <p id="profile-ref">Հրավիրված ընկերներ: 0</p>
-    </section>
+        <!-- 3. ԱՌԱՋԱԴՐԱՆՔՆԵՐ (TASKS) ԷԿՐԱՆ -->
+        <section id="screen-tasks" class="screen">
+            <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
 
-    <!-- 7. ԱԴՄԻՆ ՊԱՆԵԼ (ADMIN) ԷԿՐԱՆ -->
-    <section id="screen-admin" class="screen">
-      <h2>⚙️ Ադմին Պանել</h2>
-      <div class="card">
-        <h3>Ավելացնել ARM օգտատերին</h3>
-        <input type="text" id="admin-user-id" placeholder="User Telegram ID">
-        <input type="number" id="admin-amount" placeholder="ARM Քանակ">
-        <button class="btn" onclick="adminAddTokens()">Ավելացնել</button>
-      </div>
-    </section>
+            <div class="card card-gold">
+                <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
+                <p data-i18n="vipTaskDesc">Պահիր 100,000,000 ARM քո TON դրամապանակում</p>
+                <button class="btn btn-gold" onclick="checkWalletArmBalance()" data-i18n="checkBalBtn">Ստուգել հաշվեկշիռը</button>
+            </div>
 
-    <!-- ՆԵՐՔԵՎԻ ՆԱՎԻԳԱՑԻՈՆ ՄԵՆՅՈՒ -->
-    <nav class="bottom-nav">
-      <button class="nav-item active" onclick="switchTab('screen-tap', this)">
-        <span class="nav-icon">👆</span>
-        <span class="nav-label">Թափ</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('screen-boosts', this)">
-        <span class="nav-icon">⚡</span>
-        <span class="nav-label">Բուստեր</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('screen-tasks', this)">
-        <span class="nav-icon">🎯</span>
-        <span class="nav-label">Առաջադրանք</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('screen-wallet', this)">
-        <span class="nav-icon">💎</span>
-        <span class="nav-label">Քսակ</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('screen-rank', this)">
-        <span class="nav-icon">🏆</span>
-        <span class="nav-label">Ռանգ</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('screen-profile', this)">
-        <span class="nav-icon">👤</span>
-        <span class="nav-label">Պրոֆիլ</span>
-      </button>
-    </nav>
+            <div class="card">
+                <h3 data-i18n="tgChannelTitle">📢 Միացիր Telegram ալիքին</h3>
+                <p data-i18n="tgChannelDesc">Պարգև՝ +5,000 ARM</p>
+                <button class="btn" onclick="completeTask('tg_channel', 5000)" data-i18n="doTaskBtn">Կատարել</button>
+            </div>
+        </section>
 
-  </div>
+        <!-- 4. ՔՍԱԿ (WALLET) ԷԿՐԱՆ -->
+        <section id="screen-wallet" class="screen">
+            <h2 data-i18n="walletTitle">💎 Քսակ (TON Connect)</h2>
+            <p data-i18n="walletDesc">Միացրու քո TON քսակը ARM Jetton-ների հաշվեկշիռը ստուգելու համար։</p>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="app.js"></script>
+            <div id="ton-connect-button"></div>
+
+            <div id="wallet-arm-info" class="card card-dark-gold" style="display:none; margin-top: 15px;">
+                <h3 data-i18n="onchainTitle">💼 On-Chain ARM Հաշվեկշիռ</h3>
+                <p id="onchain-arm-balance">0 ARM</p>
+                <p id="holder-status-text" class="status-badge" data-i18n="stdHolder">Ստանդարտ Հոլդեր</p>
+            </div>
+
+            <div class="contract-info">
+                <p><strong>ARM Token Contract:</strong></p>
+                <small>EQB7bzPDOh29TLaZn-GG6Gbtn0nggQIZ2EwZ4gH5W3HwCqAB</small>
+            </div>
+        </section>
+
+        <!-- 5. ՌԱՆԳ (RANK / TOP) ԷԿՐԱՆ -->
+        <section id="screen-rank" class="screen">
+            <h2 data-i18n="rankTitle">🏆 Լավագույն խաղացողներ</h2>
+            <ol id="leaderboard-list" class="leaderboard">
+                <li data-i18n="loading">Բեռնվում է...</li>
+            </ol>
+        </section>
+
+        <!-- 6. ՊՐՈՖԻԼ (PROFILE) ԷԿՐԱՆ -->
+        <section id="screen-profile" class="screen">
+            <h2 data-i18n="profileTitle">👤 Պրոֆիլ</h2>
+            <p id="profile-name">Անուն: -</p>
+            <p id="profile-id">ID: -</p>
+            <p id="profile-vip">VIP Կարգավիճակ: ❌ Ոչ</p>
+
+            <!-- Language Switcher Card -->
+            <div class="card lang-card">
+                <h3 data-i18n="selectLang">⚙️ Լեզու / Язык / Language</h3>
+                <div class="lang-buttons">
+                    <button class="lang-btn" id="lang-hy" onclick="changeLanguage('hy')">HY</button>
+                    <button class="lang-btn" id="lang-ru" onclick="changeLanguage('ru')">RU</button>
+                    <button class="lang-btn" id="lang-en" onclick="changeLanguage('en')">EN</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. ԱԴՄԻՆ ՊԱՆԵԼ (ADMIN) ԷԿՐԱՆ -->
+        <section id="screen-admin" class="screen">
+            <h2>⚙️ Ադմին Պանել</h2>
+            <div class="card">
+                <h3>Ավելացնել ARM օգտատերին</h3>
+                <input type="text" id="admin-user-id" placeholder="User Telegram ID">
+                <input type="number" id="admin-amount" placeholder="ARM Քանակ">
+                <button class="btn" onclick="adminAddTokens()">Ավելացնել</button>
+            </div>
+        </section>
+
+        <!-- ՆԵՐՔԵՎԻ ՆԱՎԻԳԱՑԻՈՆ ՄԵՆՅՈՒ -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchTab('screen-tap', this)">
+                <span class="nav-icon">👆</span>
+                <span class="nav-label" data-i18n="navTap">Թափ</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('screen-boosts', this)">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label" data-i18n="navBoosts">Բուստեր</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('screen-tasks', this)">
+                <span class="nav-icon">🎯</span>
+                <span class="nav-label" data-i18n="navTasks">Առաջադրանք</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('screen-wallet', this)">
+                <span class="nav-icon">💎</span>
+                <span class="nav-label" data-i18n="navWallet">Քսակ</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('screen-rank', this)">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label" data-i18n="navRank">Ռանգ</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('screen-profile', this)">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label" data-i18n="navProfile">Պրոֆիլ</span>
+            </button>
+            <button id="admin-nav-item" class="nav-item" style="display: none;" onclick="switchTab('screen-admin', this)">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Ադմին</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
 </body>
-</html>
+</html>=

@@ -52,21 +52,17 @@
                 </div>
             </div>
 
-            <div class="card">
-    <h3 data-i18n="dailyReward">🎁 Օրական պարգև</h3>
-    
-    <div class="days-grid">
-        <div class="day-box"><span data-i18n="day">Օր</span> 1</div>
-        <div class="day-box"><span data-i18n="day">Օր</span> 2</div>
-        <div class="day-box"><span data-i18n="day">Օր</span> 3</div>
-        <div class="day-box"><span data-i18n="day">Օր</span> 4</div>
-        <div class="day-box active-day"><span data-i18n="day">Օր</span> 5</div>
-        <div class="day-box"><span data-i18n="day">Օր</span> 6</div>
-        <div class="day-box"><span data-i18n="day">Օր</span> 7</div>
-    </div>
-
-    <button class="btn" onclick="claimDailyReward()">Ստանալ Օրական Պարգևը</button>
-</div>
+            <div class="daily-reward-card">
+                <h3 data-i18n="dailyReward">🎁 Օրական պարգև</h3>
+                <div class="days-grid">
+                    <div class="day-box"><span data-i18n="day">Օր</span> 1<br>100</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 2<br>250</div>
+                    <div class="day-box"><span data-i18n="day">Օр</span> 3<br>500</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 4<br>1K</div>
+                    <div class="day-box active-day"><span data-i18n="day">Օր</span> 5<br>2.5K</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 6<br>5K</div>
+                    <div class="day-box"><span data-i18n="day">Օր</span> 7<br>10K</div>
+                </div>
             </div>
         </section>
 
@@ -96,20 +92,11 @@
         </section>
 
         <!-- 3. ԱՌԱՋԱԴՐԱՆՔՆԵՐ (TASKS) ԷԿՐԱՆ -->
-<section id="screen-tasks" class="screen">
-    <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
+        <section id="screen-tasks" class="screen">
+            <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
 
-    <!-- ՕՐԱԿԱՆ ՊԱՐԳԵՎԻ ՔԱՐՏ -->
-    <div class="card">
-        <h3>🎁 Օրական Պարգև</h3>
-        <p>Ստացիր անվճար ARM ամեն օր</p>
-        <button class="btn" onclick="claimDailyReward()">Ստանալ Օրական Պարգևը</button>
-    </div>
-
-    <!-- VIP Holder Task -->
-    <div class="card card-gold">
-        <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
-        ...
+            <div class="card card-gold">
+                <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
                 <p data-i18n="vipTaskDesc">Պահիր 100,000,000 ARM քո TON դրամապանակում</p>
                 <button class="btn btn-gold" onclick="checkWalletArmBalance()" data-i18n="checkBalBtn">Ստուգել հաշվեկշիռը</button>
             </div>

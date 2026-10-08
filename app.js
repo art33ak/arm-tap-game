@@ -279,7 +279,7 @@ function switchTab(screenId, element) {
 
 // 6. TON Connect Միացում
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-  manifestUrl: window.location.origin + '/tonconnect-manifest.json',
+  manifestUrl: 'https://arm-tap-game.vercel.app/tonconnect-manifest.json',
   buttonRootId: 'ton-connect-button'
 });
 

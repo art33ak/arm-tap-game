@@ -164,6 +164,31 @@
                 <input type="number" id="admin-amount" placeholder="ARM Քանակ">
                 <button class="btn" onclick="adminAddTokens()">Ավելացնել</button>
             </div>
+            <div class="card" id="admin-add-task-card">
+    <h3>➕ Ավելացնել Նոր Առաջադրանք</h3>
+    <input type="text" id="task-id" placeholder="ID (օրինակ` task_youtube)" style="margin: 5px 0; padding: 8px; width: 100%;">
+    <input type="text" id="task-title" placeholder="Վերնագիր (օրինակ` Subscribe YouTube)" style="margin: 5px 0; padding: 8px; width: 100%;">
+    <input type="number" id="task-reward" placeholder="Պարգև (օրինակ` 10000)" style="margin: 5px 0; padding: 8px; width: 100%;">
+    <input type="text" id="task-link" placeholder="Հղում (https://...)" style="margin: 5px 0; padding: 8px; width: 100%;">
+    
+    <button class="btn" onclick="submitNewTask()">Ավելացնել</button>
+</div>
+
+<script>
+function submitNewTask() {
+    const id = document.getElementById('task-id').value;
+    const title = document.getElementById('task-title').value;
+    const reward = document.getElementById('task-reward').value;
+    const link = document.getElementById('task-link').value;
+
+    if (!id || !title || !reward) {
+        alert("Լրացրեք բոլոր դաշտերը:");
+        return;
+    }
+
+    addNewTaskByAdmin(id, title, reward, link);
+}
+</script>
         </section>
 
         <!-- ՆԵՐՔԵՎԻ ՆԱՎԻԳԱՑԻՈՆ ՄԵՆՅՈՒ -->

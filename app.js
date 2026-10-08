@@ -438,3 +438,26 @@ function completeTask(taskId, reward, link) {
         renderTasks();
     }
 }
+// 1. Ադմինի կողմից նոր առաջադրանք ավելացնելու ֆունկցիա
+function addNewTaskByAdmin(taskId, title, reward, link) {
+    // Ստուգում ենք՝ արդյոք օգտատերը իրականում ադմին է (ID: 6316594244)
+    if (Telegram.WebApp.initDataUnsafe?.user?.id !== 6316594244) {
+        alert("Դուք չունեք ադմինի իրավասություն:");
+        return;
+    }
+
+    const newTask = {
+        title: title,
+        reward: parseInt(reward),
+        link: link
+    };
+
+    // Պահպանում ենք Firebase-ում 'tasks' ճյուղի տակ
+    firebase.database().ref('tasks/' + taskId).set(newTask, (error) => {
+        if (error) {
+            alert("Սխալ տեղի ունեցավ առաջադրանքը ավելացնելիս:");
+        } else {
+            alert("Առաջադրանքը հաջողությամբ ավելացվեց:");
+        }
+    });
+}

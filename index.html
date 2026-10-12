@@ -231,3 +231,22 @@ function submitNewTask() {
     <script src="app.js"></script>
 </body>
 </html>=
+<!-- 3. ԱՌԱՋԱԴՐԱՆՔՆԵՐ (TASKS) ԷԿՐԱՆ -->
+<section id="screen-tasks" class="screen">
+    <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
+
+    <div class="card card-gold">
+        <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
+        <p data-i18n="vipTaskDesc">Պահիր 10,000,000 ARM քո TON դրամապանակում</p>
+        <button class="btn btn-gold" onclick="checkWalletArmBalance()" data-i18n="checkBalBtn">Ստուգել հաշվեկշիռը</button>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="tgChannelTitle">📢 Միացիր Telegram ալիքին</h3>
+        <p data-i18n="tgChannelDesc">Պարգև՝ +5,000 ARM</p>
+        <button class="btn" onclick="completeTask('tg_channel', 5000)" data-i18n="doTaskBtn">Կատարել</button>
+    </div>
+
+    <!-- Ադմինի կողմից ավելացված առաջադրանքները կհայտնվեն այստեղ -->
+    <div id="dynamic-tasks-container" style="width: 100%;"></div>
+</section>

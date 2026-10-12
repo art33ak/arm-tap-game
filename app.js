@@ -268,13 +268,16 @@ setInterval(() => {
 }, 1000);
 
 // 5. Նավիգացիա
-function switchTab(screenId, element) {
+function switchTab(screenId, btnElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   
-  const target = document.getElementById(screenId);
-  if (target) target.classList.add('active');
-  if (element) element.classList.add('active');
+  const targetScreen = document.getElementById(screenId);
+  if (targetScreen) targetScreen.classList.add('active');
+  if (btnElement) btnElement.classList.add('active')
+if (screenId === 'screen-rank') {
+        loadLeaderboard();
+    }
 }
 
 // 6. TON Connect Միացում
@@ -506,4 +509,44 @@ function buyBoost(type) {
             alert("Բալանսը բավարար չէ այս բուստի համար:");
         }
     }
+}
+// ==================== LEADERBOARD (RANK) LOGIC ====================
+function loadLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboard-list');
+    if (!leaderboardList) return;
+
+    // Վերցնում ենք բոլոր օգտատերերին Firebase-ից
+    db.ref('users').orderByChild('balance').once('value', (snapshot) => {
+        leaderboardList.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+            leaderboardList.innerHTML = '<li>Խաղացողներ չկան</li>';
+            return;
+        }
+
+        let usersArray = [];
+        snapshot.forEach((childSnapshot) => {
+            usersArray.push(childSnapshot.val());
+        });
+
+        // Դասավորում ենք ըստ բալանսի նվազման (շատից քիչ)
+        usersArray.sort((a, b) => (b.balance || 0) - (a.balance || 0));
+
+        // Վերցնում ենք միայն թոփ 50 խաղացողին
+        usersArray.slice(0, 50).forEach((user, index) => {
+            const li = document.createElement('li');
+            li.style.cssText = "display: flex; justify-content: space-between; padding: 10px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 8px;";
+            
+            let medal = `#${index + 1}`;
+            if (index === 0) medal = '🥇 1';
+            else if (index === 1) medal = '🥈 2';
+            else if (index === 2) medal = '🥉 3';
+
+            li.innerHTML = `
+                <span><strong>${medal}</strong> ${user.name || 'Խաղացող'} ${user.isVip ? '👑' : ''}</span>
+                <span style="color: #38bdf8; font-weight: bold;">${Math.floor(user.balance || 0).toLocaleString()} ARM</span>
+            `;
+            leaderboardList.appendChild(li);
+        });
+    });
 }

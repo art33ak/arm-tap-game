@@ -398,27 +398,32 @@ const tasksList = [
     }
 ];
 
+// ==================== RENDER TASKS FROM FIREBASE ====================
 function renderTasks() {
-    const container = document.getElementById('tasks-container');
+    const container = document.getElementById('dynamic-tasks-container');
     if (!container) return;
 
-    container.innerHTML = '';
-    tasksList.forEach(task => {
-        const isCompleted = userData.completedTasks && userData.completedTasks.includes(task.id);
-        const div = document.createElement('div');
-        div.style.cssText = "background: rgba(255,255,255,0.05); padding: 12px; margin: 8px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;";
-        div.innerHTML = `
-            <div>
-                <strong style="color: #fff;">${task.title}</strong>
-                <div style="color: #ffd700;">+${task.reward.toLocaleString()} ARM</div>
-            </div>
-            <button onclick="completeTask('${task.id}', ${task.reward}, '${task.link}')" 
-                    style="padding: 8px 15px; border-radius: 8px; border: none; background: ${isCompleted ? '#555' : '#0088cc'}; color: #fff;"
-                    ${isCompleted ? 'disabled' : ''}>
-                ${isCompleted ? 'Done' : 'Start'}
-            </button>
-        `;
-        container.appendChild(div);
+    db.ref('tasks').once('value', (snapshot) => {
+        container.innerHTML = ''; // Մաքրում ենք հինը
+
+        if (!snapshot.exists()) return;
+
+        snapshot.forEach((childSnapshot) => {
+            const taskKey = childSnapshot.key;
+            const task = childSnapshot.val();
+            const isCompleted = userData.completedTasks && userData.completedTasks.includes(taskKey);
+
+            const taskCard = document.createElement('div');
+            taskCard.className = 'card';
+            taskCard.innerHTML = `
+                <h3>📌 ${task.title}</h3>
+                <p>Պարգև՝ +${Number(task.reward).toLocaleString()} ARM</p>
+                <button class="btn" onclick="completeTask('${taskKey}', ${task.reward}, '${task.link || ''}')" ${isCompleted ? 'disabled style="background: #555;"' : ''}>
+                    ${isCompleted ? 'Կատարված է' : 'Կատարել'}
+                </button>
+            `;
+            container.appendChild(taskCard);
+        });
     });
 }
 

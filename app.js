@@ -423,22 +423,30 @@ function renderTasks() {
 }
 
 function completeTask(taskId, reward, link) {
-    if (link && window.Telegram && window.Telegram.WebApp) {
-        Telegram.WebApp.openTelegramLink(link);
+    if (link && link !== 'undefined' && link !== '') {
+        if (window.Telegram && window.Telegram.WebApp) {
+            Telegram.WebApp.openTelegramLink(link);
+        } else {
+            window.open(link, '_blank');
+        }
     }
+
     if (!userData.completedTasks) userData.completedTasks = [];
 
     if (!userData.completedTasks.includes(taskId)) {
         userData.completedTasks.push(taskId);
-        userData.balance = (userData.balance || 0) + reward;
+        userData.balance += Number(reward);
 
         userRef.update({
             balance: userData.balance,
             completedTasks: userData.completedTasks
         });
 
+        alert(`Շնորհավորում ենք! Ստացաք +${Number(reward).toLocaleString()} ARM`);
         updateUI();
         renderTasks();
+    } else {
+        alert("Այս առաջադրանքն արդեն կատարել եք:");
     }
 }
 // 1. Ադմինի կողմից նոր առաջադրանք ավելացնելու ֆունկցիա
@@ -548,5 +556,50 @@ function loadLeaderboard() {
             `;
             leaderboardList.appendChild(li);
         });
+    });
+}
+// ==================== RENDER TASKS FROM FIREBASE ====================
+function renderTasks() {
+    const container = document.getElementById('screen-tasks');
+    if (!container) return;
+
+    // Կարդում ենք առաջադրանքները Firebase-ից
+    db.ref('tasks').once('value', (snapshot) => {
+        // Պահպանում ենք կամ թարմացնում ենք առաջադրանքների բաժինը
+        let tasksHTML = `
+            <h2 data-i18n="tasksTitle">🎯 Առաջադրանքներ</h2>
+
+            <div class="card card-gold">
+                <h3 data-i18n="vipTaskTitle">💎 VIP Holder Task</h3>
+                <p data-i18n="vipTaskDesc">Պահիր 10,000,000 ARM քո TON դրամապանակում</p>
+                <button class="btn btn-gold" onclick="checkWalletArmBalance()" data-i18n="checkBalBtn">Ստուգել հաշվեկշիռը</button>
+            </div>
+
+            <div class="card">
+                <h3 data-i18n="tgChannelTitle">📢 Միացիր Telegram ալիքին</h3>
+                <p data-i18n="tgChannelDesc">Պարգև՝ +5,000 ARM</p>
+                <button class="btn" onclick="completeTask('tg_channel', 5000)" data-i18n="doTaskBtn">Կատարել</button>
+            </div>
+        `;
+
+        if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+                const taskKey = childSnapshot.key;
+                const task = childSnapshot.val();
+                const isCompleted = userData.completedTasks && userData.completedTasks.includes(taskKey);
+
+                tasksHTML += `
+                    <div class="card">
+                        <h3>📌 ${task.title}</h3>
+                        <p>Պարգև՝ +${Number(task.reward).toLocaleString()} ARM</p>
+                        <button class="btn" onclick="completeTask('${taskKey}', ${task.reward}, '${task.link || ''}')" ${isCompleted ? 'disabled style="background: #555;"' : ''}>
+                            ${isCompleted ? 'Կատարված է' : 'Կատարել'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        container.innerHTML = tasksHTML;
     });
 }

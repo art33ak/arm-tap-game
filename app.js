@@ -461,3 +461,49 @@ function addNewTaskByAdmin(taskId, title, reward, link) {
         }
     });
 }
+// ==================== BOOSTS LOGIC ====================
+let multitapLevel = 1;
+let energyLevel = 1;
+
+function buyBoost(type) {
+    if (type === 'multitap') {
+        const cost = multitapLevel * 100; // Արժեքը կախված է մակարդակից
+        if (userData.balance >= cost) {
+            userData.balance -= cost;
+            multitapLevel++;
+            userData.tapPower = (userData.tapPower || 1) + 1; // Ավելացնում ենք թափի ուժը (+1)
+
+            userRef.update({
+                balance: userData.balance,
+                tapPower: userData.tapPower,
+                multitapLevel: multitapLevel
+            });
+
+            alert(`Հաջողություն! Multitap-ը բարձրացավ մակարդակ ${multitapLevel}`);
+            updateUI();
+        } else {
+            alert("Բալանսը բավարար չէ այս բուստի համար:");
+        }
+    } 
+    else if (type === 'energy') {
+        const cost = energyLevel * 200;
+        if (userData.balance >= cost) {
+            userData.balance -= cost;
+            energyLevel++;
+            userData.maxEnergy = (userData.maxEnergy || 1000) + 500; // Ավելացնում ենք էներգիայի լիմիտը (+500)
+            userData.energy = userData.maxEnergy; // Լցնում ենք էներգիան մինչև առավելագույնը
+
+            userRef.update({
+                balance: userData.balance,
+                maxEnergy: userData.maxEnergy,
+                energy: userData.energy,
+                energyLevel: energyLevel
+            });
+
+            alert(`Հաջողություն! Էներգիայի լիմիտը դարձավ ${userData.maxEnergy}`);
+            updateUI();
+        } else {
+            alert("Բալանսը բավարար չէ այս բուստի համար:");
+        }
+    }
+}
